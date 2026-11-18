@@ -1,0 +1,23 @@
+name: nyc_taxi
+version: "1.0.0"
+profile: nyc_taxi
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+
+vars:
+  # Root of the lake written by lakehouse/run_pipeline.py (relative to dbt/).
+  lake: "../data/lake"
+
+models:
+  nyc_taxi:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  nyc_taxi:
+    taxi_zone_lookup:
+      +column_types:
+        LocationID: integer

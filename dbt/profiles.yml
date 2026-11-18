@@ -1,0 +1,11 @@
+# Local DuckDB warehouse. No credentials needed; the delta extension lets
+# DuckDB read the Delta Lake tables that the PySpark pipeline writes.
+nyc_taxi:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: warehouse.duckdb
+      extensions:
+        - delta
+      threads: 4

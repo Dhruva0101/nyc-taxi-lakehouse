@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: stg_trips
+    description: Cleaned trips read from the silver Delta table.
+
+  - name: dim_zone
+    description: NYC TLC taxi zones.
+    columns:
+      - name: zone_id
+        tests: [unique, not_null]
+      - name: borough
+        tests: [not_null]
+
+  - name: dim_date
+    description: Calendar days.
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
+
+  - name: fct_trips
+    description: One row per trip.
+    columns:
+      - name: trip_id
+        tests: [unique, not_null]
+      - name: date_day
+        tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: pickup_zone_id
+        tests:
+          - relationships:
+              arguments: {to: ref('dim_zone'), field: zone_id}
+      - name: dropoff_zone_id
+        tests:
+          - relationships:
+              arguments: {to: ref('dim_zone'), field: zone_id}
+      - name: payment_method
+        tests:
+          - accepted_values:
+              arguments: {values: [card, cash, no_charge, dispute, other]}
+      - name: fare_amount
+        tests: [not_null]
+
+  - name: borough_daily_revenue
+    description: Trips, revenue and card tip % by borough and day.

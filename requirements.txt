@@ -1,0 +1,7 @@
+pyspark==3.5.1
+delta-spark==3.2.0
+pytest>=8.0
+dbt-duckdb>=1.9
+duckdb>=1.1
+# Airflow is installed separately (it pins many dependencies), e.g. in Docker:
+#   https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html
